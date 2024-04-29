@@ -6,17 +6,18 @@ export declare namespace JSX {
         props: 1
     }
     type Element = string
+
+    type Factory =
+    (
+        tag: Element,
+        att: {
+            children: Element
+        },
+    ) => Element
 }
 
-type Factory<T> =
-(
-    tag: T | string,
-    att: {
-        [ key: string ]: any
-    }
-) => T | string
 
-const jsx: Factory<any> =
+const jsx: JSX.Factory =
 (tag, att) => {
     console.log({tag, att})
     return tag
