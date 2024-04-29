@@ -1,5 +1,11 @@
 const [ dir ] = Deno.args
 
+const boilerplate = await Deno.readTextFile("boilerplate.html")
+
+const template =
+(body: string) =>
+    boilerplate.replace("{body}", body)
+
 Deno.serve(async req => {
     const path = "./"
         + dir
@@ -8,5 +14,12 @@ Deno.serve(async req => {
         + ".tsx"
     console.log(path)
     const { default: page } = await import(path)
-    return new Response(page)
+    return new Response(
+        template(page),
+        {
+            headers: {
+                "content-type": "text/html",
+            }
+        }
+    )
 })

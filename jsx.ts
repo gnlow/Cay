@@ -7,20 +7,35 @@ export declare namespace JSX {
     }
     type Element = string
 
+    type Attr = {
+        children: Element | Element[]
+    }
+    type NAttr = {
+        children: Element[]
+    }
     type Factory =
     (
         tag: Element,
-        att: {
-            children: Element
-        },
+        att: Attr,
     ) => Element
 }
 
+const childrenNormalize =
+(children: JSX.Element | JSX.Element[]): JSX.Element[] =>
+    [children].flat()
+
+const intrinsic: Record<string, (att: JSX.NAttr) => JSX.Element> = {
+    v: ({children}) => `<v>${children.join("")}</v>`,
+    h: ({children}) => `<h>${children.join("")}</h>`,
+}
 
 const jsx: JSX.Factory =
 (tag, att) => {
     console.log({tag, att})
-    return tag
+    return (typeof tag == "string" ? intrinsic[tag] : tag)({
+        ...att,
+        children: childrenNormalize(att.children)
+    })
 }
 
 export {
