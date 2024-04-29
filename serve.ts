@@ -1,12 +1,15 @@
 const [ dir ] = Deno.args
 
-const boilerplate = await Deno.readTextFile("boilerplate.html")
+let boilerplate = await Deno.readTextFile("boilerplate.html")
+
+const boilerplateReload = async () => boilerplate = await Deno.readTextFile("boilerplate.html")
 
 const template =
 (body: string) =>
     boilerplate.replace("{body}", body)
 
 Deno.serve(async req => {
+    await boilerplateReload()
     const path = "./"
         + dir
         + "/"

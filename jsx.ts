@@ -32,7 +32,11 @@ const intrinsic: Record<string, (att: JSX.NAttr) => JSX.Element> = {
 const jsx: JSX.Factory =
 (tag, att) => {
     console.log({tag, att})
-    return (typeof tag == "string" ? intrinsic[tag] : tag)({
+    return (
+        typeof tag == "string"
+            ? intrinsic[tag]
+            : tag
+        )({
         ...att,
         children: childrenNormalize(att.children),
     })
