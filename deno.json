@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "jsxImportSource": "cay"
+    },
+    "imports": {
+        "cay/jsx-runtime": "./jsx.ts"
+    }
+}
