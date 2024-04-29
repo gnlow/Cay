@@ -1,5 +1,5 @@
 export default
-<v>
+<v top>
     <h>Hello,</h>
     <h>World!</h>
 </v>

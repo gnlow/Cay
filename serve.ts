@@ -12,6 +12,8 @@ Deno.serve(async req => {
         + "/"
         + (new URL(req.url).pathname.substring(1) || "index")
         + ".tsx"
+        + "?cache-bust="
+        + Math.random()
     console.log(path)
     const { default: page } = await import(path)
     return new Response(

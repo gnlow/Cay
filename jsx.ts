@@ -34,7 +34,7 @@ const jsx: JSX.Factory =
     console.log({tag, att})
     return (typeof tag == "string" ? intrinsic[tag] : tag)({
         ...att,
-        children: childrenNormalize(att.children)
+        children: childrenNormalize(att.children),
     })
 }
 
