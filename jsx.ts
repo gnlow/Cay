@@ -5,41 +5,43 @@ export declare namespace JSX {
     interface ElementAttributesProperty {
         props: 1
     }
-    type Element = string
+    type Element = string & { _: "Element" }
+    type Output = string & { _: "Output" }
 
     type Attr = {
-        children: Element | Element[]
+        children: Output | Output[]
     }
     type NAttr = {
-        children: Element[]
+        children: Output[]
     }
     type Factory =
     (
         tag: Element,
         att: Attr,
-    ) => Element
+    ) => Output
 }
 
 const childrenNormalize =
-(children: JSX.Element | JSX.Element[]): JSX.Element[] =>
+(children: JSX.Output | JSX.Output[]): JSX.Output[] =>
     [children].flat()
-
-const intrinsic: Record<string, (att: JSX.NAttr) => JSX.Element> = {
-    v: ({children}) => `<v>${children.join("")}</v>`,
-    h: ({children}) => `<h>${children.join("")}</h>`,
-}
 
 const jsx: JSX.Factory =
 (tag, att) => {
     console.log({tag, att})
-    return (
-        typeof tag == "string"
-            ? intrinsic[tag]
-            : tag
-        )({
-        ...att,
-        children: childrenNormalize(att.children),
-    })
+    const children = childrenNormalize(att.children)
+    if (typeof tag == "string") {
+        const props =
+            Object.entries(att)
+                .filter(([k]) => k != "children")
+                .map(([k, v]) => `${k}="${v}"`)
+                .join(" ")
+        return (""
+            + `<${tag} ${props}>`
+            + children.join("")
+            + `</${tag}>`
+        ) as JSX.Output
+    }
+    throw 0
 }
 
 export {
