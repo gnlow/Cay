@@ -18,13 +18,23 @@ Deno.serve(async req => {
         + "?cache-bust="
         + Math.random()
     console.log(path)
-    const { default: page } = await import(path)
-    return new Response(
-        template(page),
-        {
-            headers: {
-                "content-type": "text/html",
+    return await import(path)
+        .then(x => {
+            console.log(x)
+            return x
+        })
+        .then(({ default: page }) => new Response(
+            template(page),
+            {
+                headers: {
+                    "content-type": "text/html",
+                },
             }
-        }
-    )
+        ))
+        .catch(() => new Response(
+            "404 Not Found",
+            {
+                status: 404,
+            }
+        ))
 })

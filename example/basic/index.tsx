@@ -1,2 +1,6 @@
+export let clicks = 0
+
 export default
-<a href="./test">test</a>
+<button $click={() => clicks++}>
+    Fired {clicks} arrows
+</button>
